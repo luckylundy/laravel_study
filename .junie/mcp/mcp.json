@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/Users/toyotaka-kamon/Library/Application Support/Herd/bin/php84",
+            "args": [
+                "/Users/toyotaka-kamon/Herd/laravelapp/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
