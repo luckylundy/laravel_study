@@ -19,6 +19,11 @@ class Person extends Model
         'age' => 'integer|min:0|max:150'
     );
 
+    // Personモデルが主、Boardモデルが従の関係を1対他の形で関連づけ、メソッド名は複数形にする
+    public function boards() {
+        return $this->hasMany('App\Models\Board');
+    }
+
     public function getData() {
         return $this->id . ': ' . $this->name . ' (' . $this->age . ')';
     }
@@ -39,19 +44,4 @@ class Person extends Model
         return $query->where('age', '<=', $n);
     }
 
-    // Personモデルを使用するとき、毎回必ず「年齢が20以上」という条件がつくようになる
-    // このモデルが使われる時、最初に自動で実行される準備メソッド
-    // protected static function boot() {
-    //     // まず親クラス（Model）の準備を先にやっておく
-    //     parent::boot();
-
-    //     // 'age'はスコープの名前
-    //     static::addGlobalScope('age',   
-    //         // 自動で実行する処理
-    //         function (Builder $builder) {
-    //             // 処理の中身(年齢が20以上)
-    //             $builder->where('age', '>', 20);
-    //         }
-    //     );
-    // }
 }

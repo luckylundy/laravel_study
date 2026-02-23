@@ -8,8 +8,18 @@ use Illuminate\Http\Request;
 class PersonController extends Controller
 {
     public function index(Request $request) {
-        $items = Person::all();
-        return view('person.index', ['items' => $items]);
+        // 投稿したユーザーだけを取得
+        $hasItems = Person::has('boards')->get();
+        // 投稿していないユーザーだけを取得
+        $noItems = Person::doesntHave('boards')->get();
+        // 同じ名前でビューで使用できるようにする
+        $param = [
+            'hasItems' => $hasItems,
+            'noItems' => $noItems,
+        ];
+        return view('person.index', $param);
+        // $items = Person::all();
+        // return view('person.index', ['items' => $items]);
     }
 
     public function find(Request $request) {
@@ -85,4 +95,5 @@ class PersonController extends Controller
         // person一覧ページに戻る
         return redirect('/person');
     }
+
 }
