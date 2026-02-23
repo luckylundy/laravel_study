@@ -47,4 +47,42 @@ class PersonController extends Controller
         // 「/person」にリダイレクトする
         return redirect('/person');
     }
+
+    public function edit(Request $request) {
+        // まず該当レコードを特定して取得
+        $person = Person::find($request->id);
+        // 編集ページでformに$personの情報を使用できるようにする
+        return view('person.edit', ['form' => $person]);
+    }
+
+    public function update(Request $request) {
+        // バリデーションで不正や間違いを弾き、残った属性の値を$formに代入
+        $form = $request->validate(Person::$rules);
+        // リクエストのidを持つpersonクラスのレコードを$personに格納
+        $person = Person::find($request->id);
+        // バリデーションに通った属性の値を取得する
+        // $form = $request->all();
+        // // $formから_tokenの値を排除する
+        // unset($form['_token']);
+        // $personにそれぞれの属性の値を代入してDBに保存
+        $person->fill($form)->save();
+        // person一覧ページにリダイレクト
+        return redirect('/person');
+    }
+
+    public function delete(Request $request) {
+        // Personテーブルからリクエストのidと合致するレコードを取得
+        $person = Person::find($request->id);
+        // 削除ページを表示、ページでは$personをformという変数で使用
+        return view('person.del', ['form' => $person]);
+    }
+
+    public function remove(Request $request) {
+        // リクエストのidからユーザーを特定する
+        $person = Person::find($request->id);
+        // 特定したユーザーの削除
+        $person->delete();
+        // person一覧ページに戻る
+        return redirect('/person');
+    }
 }

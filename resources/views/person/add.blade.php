@@ -1,6 +1,6 @@
 @extends('layouts.helloapp')
 
-@section('title', Person.add)
+@section('title', 'Person.add')
 
 @section('menubar')
     新規作成ページ
@@ -10,7 +10,7 @@
     @if (count($errors) > 0)
         <div>
             <ul>
-            @foreach ($errors as $error)
+            @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
             </ul>
