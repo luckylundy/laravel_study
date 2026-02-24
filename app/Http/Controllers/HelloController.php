@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\HelloRequest;
 
 class HelloController extends Controller
 {
     public function index(Request $request) {
-        $items = DB::table('people')->orderBy('age', 'asc')->get();
-        // ビューで$itemsが使用できるようにitemsを渡す
-        return view('hello.index', ['items' => $items]);
+        return view('hello.index', ['msg' => 'フォームを入力']);
     }
 
     // showページへのリンクを押した時点で$requestをlaravelが生成
@@ -23,10 +22,17 @@ class HelloController extends Controller
         return view('hello.show', ['items' => $items]);
     }
 
-    public function post(Request $request)
+    public function post(HelloRequest $request)
     {
-        $items = DB::select('select * from people');
-        return view('hello.index', ['items' => $items]);
+        // バリデーションのルールを設定
+        // $validate_rule = [
+        //     'name' => 'required',
+        //     'mail' => 'email',
+        //     'age' => 'numeric|between:0,150',
+        // ];
+        // リクエストをバリデーションでチェックする
+        // $request->validate($validate_rule);
+        return view('hello.index', ['msg' => '正しく入力されました！']);
     }
 
     public function add(Request $request) {
