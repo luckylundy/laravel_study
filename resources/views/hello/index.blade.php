@@ -9,7 +9,17 @@
 </head>
 <body>
 @extends('layouts.helloapp')
-
+<style>
+    nav {margin: 10px;}
+    nav span {margin:5px; font-size:12pt;}
+    nav a {margin:5px; font-size:12pt;}
+    nav div {margin:0px; font-size:12pt;}
+    svg {width:25px; height:25px; margin-bottom: -7px;}
+    tr th a:link { color: white; }
+    tr th a:visited { color: white; }
+    tr th a:hover { color: white; }
+    tr th a:active { color: white; }
+</style>
 @section('title', 'Index')
 
 @section('menubar')
@@ -18,40 +28,22 @@
 @endsection
 
 @section('content')
-    <p>{{$msg}}</p>
-    <form action="/hello" method="post">
-        @csrf
-        <div>
-            <label style="display:inline-block; width:75px;" for="name">name: </label>
-            <input type="text" name="name" value="{{ old('name') }}">
-            {{-- nameのフィールドでエラーがあれば表示 --}}
-            @if ($errors->has('name'))
-                <p style="font-size:10pt; margin-top:0px;">
-                    {{-- $errorsの中でname属性の最初のものを表示する --}}
-                    ERROR:{{ $errors->first('name') }}
-                </p>
-            @endif
-        </div>
-        <div>
-            <label style="display:inline-block; width:75px;" for="mail">mail: </label>
-            <input type="text" name="mail" value="{{ old('mail') }}">
-            @error('mail')
-                <p style="font-size:10pt; margin-top:0px;">
-                    ERROR:{{ $errors->first('mail') }}
-                </p>
-            @enderror
-        </div>
-        <div>
-            <label style="display:inline-block; width:75px;" for="age">age: </label>
-            <input type="number" name="age" value="{{ old('age') }}">
-            @error('age')
-                <p style="font-size:10pt; margin-top:0px;">
-                    ERROR:{{ $errors->first('age') }}
-                </p>
-            @enderror
-            <input type="submit" value="送信">
-        </div>
-    </form>
+    <table>
+        <tr>
+            <th><a href="/hello?sort=name">Name</a></th>
+            <th><a href="/hello?sort=mail">Mail</a></th>
+            <th><a href="/hello?sort=age">Age</a></th>
+        </tr>
+        @foreach ($items as $item)
+            <tr>
+                <td>{{ $item->name }}</td>
+                <td>{{ $item->mail }}</td>
+                <td>{{ $item->age }}</td>
+            </tr>
+        @endforeach
+    </table>
+    {{-- ページネーション --}}
+    {{ $items->appends(['sort' => $sort])->links() }}
 @endsection
 
 @section('footer')

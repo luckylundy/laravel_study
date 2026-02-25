@@ -6,11 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\HelloRequest;
+use App\Models\Person;
 
 class HelloController extends Controller
 {
     public function index(Request $request) {
-        return view('hello.index', ['msg' => 'フォームを入力']);
+        // 送られてきたURLからどのフィールド名でソートするのかを変数に代入(nameやage)
+        $sort = $request->sort;
+        // $sortで昇順にする
+        $items = Person::orderBy($sort, 'asc')->paginate(5);
+        // ビューに送るオブジェクトを配列にする
+        $param = ['items' => $items, 'sort' => $sort];
+        return view('hello.index', $param);
     }
 
     // showページへのリンクを押した時点で$requestをlaravelが生成
