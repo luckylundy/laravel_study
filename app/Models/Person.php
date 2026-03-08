@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Person extends Model
 {
+    // ファクトリーを持つようになる
+    use HasFactory;
+
     // DBにcreated_atとupdated_atがない場合はlaravelにこれらのデータを保存しないよう明記する
     public $timestamps = false;
     // idをユーザーが勝手に変更できないようにする
